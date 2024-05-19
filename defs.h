@@ -1,6 +1,8 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#define MAXGAMEMOVES 2048 // Longest possible game.
+
 typedef unsigned long long U64; // unsigned 64 bit integer type.
 
 #define NAME "Vice 1.0"
@@ -33,6 +35,27 @@ enum {
 // basic bool initialization. F = 0, T = 1.
 enum { FALSE, TRUE};
 
+// KCA = king castling, QCA = queen castling, W,B = white, black
+// 0000 | 1111, each bit is respective to wether certain castling possibility is available.
+//      0 | 1     0 | 1     0 | 1     0 | 1
+enum { WKCA = 1, WQCA = 2, BKCA = 4, BQCA = 8 };
+
+// move-undo, chess board move structure.
+
+typedef struct 
+{
+	int move; // the move that will be played.
+
+	int castlePerm; // castling permissions before move.
+
+	int enPas; // en passant square possibility before move.
+
+	int fiftyMove; // status of 50 move rule before move.
+
+	U64 posKey; // position key before move.
+
+} S_UNDO;
+
 // chess board structure.
 typedef struct 
 {
@@ -48,9 +71,36 @@ typedef struct
 	// holds king location.
 	int KingSq[2];
 
-	// turn (W or B)
+	// 4 bit int, 0000 | 1111 corresponding to line: 37,
+	// 	 that states the castling possibilites
+	int castlePerm;
+
+	//========= RULES ==================================================================
+
+	// turn (W or B).
 	int side;
-	
+
+	// type: Square, if not active, enPas = NO_SQ.
+	int enPas;
+
+	// if active, draw game (50 moves = 100 ply).
+	int fiftyMove;
+
+	// half moves
+	int ply;
+
+	// determines 3-fold repetition, if active, draws the game.
+	int hisPly;
+
+	U64 posKey;
+
+	// Pce[3] for whitePce, blackPce, bothPce.
+	int pceNum[13]; // stores number of pieces on board.	   (P, N, B, R, Q, K)
+	int bigPce[3];  // stores number of big pieces on board.   (N, B, R, Q)
+	int majPce[3];  // stores number of major pieces on board. (R, Q)
+	int minPce[3];  // stores number of minor pieces on board. (N, B)
+
+	S_UNDO history[MAXGAMEMOVES];
 
 } S_BOARD;
 
