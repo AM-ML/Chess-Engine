@@ -27,8 +27,16 @@ int main(void)
 {
 	AllInit();
 
-	int nuts = 4, nut = 2;
-	ASSERT(nuts == nut);
+	U64 bb = 0ULL;
+
+	printf("start: \n");
+	PrintBitBoard(bb);
+
+	bb |= 1ULL << SQ64(E2);
+	bb |= 1ULL << SQ64(H2);
+
+	printf("ADDED pawn on E2, H2: \n");
+	PrintBitBoard(bb);
 
 	return 0;
 }
