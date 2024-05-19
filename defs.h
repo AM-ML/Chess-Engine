@@ -1,12 +1,29 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#define MAXGAMEMOVES 2048 // Longest possible game.
+#include <stdlib.h>
 
 typedef unsigned long long U64; // unsigned 64 bit integer type.
 
+#define MAXGAMEMOVES 2048 // Longest possible game.
 #define NAME "Vice 1.0"
 #define BRD_SQ_NUM 120 // chess board array size / length.
+
+#define DEBUG // activates DEBUG MODE
+// if DEBUG MODE ON: creates an ASSERT macro that makes it easy to debug errors in code
+// ASSERT(2 == 4) -> will output an error, the time & date, which file and which line.
+#ifndef DEBUG
+#define ASSERT(n)
+#else
+#define ASSERT(n) \
+if(! (n)) {	\
+	printf("\033[1;31mFAIL - \033[1;93m\"%s\"\n", #n); \
+	printf("\033[1;31mFILE - \033[1;96m%s", __FILE__); \
+	printf("\033[1;93m - \033[1;96mLine %d\n", __LINE__); \
+	printf("\033[1;31mDATE - \033[1;96m%s ", __DATE__); \
+	printf("\033[1;93m- \033[1;96m%s\033[0;0m\n", __TIME__); \
+	exit(1);	}
+#endif
 
 // chess pieces
 enum { EMPTY, wP, wN, wB, wR, wQ, wK, bP, bN, bB, bR, bQ, bK };
@@ -101,6 +118,12 @@ typedef struct
 	int minPce[3];  // stores number of minor pieces on board. (N, B)
 
 	S_UNDO history[MAXGAMEMOVES];
+
+	// piece list: [13] = number of pieces, [10] = max number of this piece on board.
+	// piece list: stores the number of possible moves for every piece on board.
+	// pList[wN][0] = E1;
+	// pList[wN][1] = C3; etc.
+	int pList[13][10];
 
 } S_BOARD;
 

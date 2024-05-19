@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include "defs.h"
 
-int main(void)
+void output_board_status()
 {
-	AllInit();
-
 	for(int i = 0; i < BRD_SQ_NUM; i++)
 	{
 		if (i % 10 == 0)
@@ -23,6 +21,14 @@ int main(void)
 	}
 
 	printf("\n");
+}
+
+int main(void)
+{
+	AllInit();
+
+	int nuts = 4, nut = 2;
+	ASSERT(nuts == nut);
 
 	return 0;
 }
