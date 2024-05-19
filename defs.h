@@ -104,4 +104,23 @@ typedef struct
 
 } S_BOARD;
 
+/* MACROS */
+
+// performs mathematical operation to convert file, rank as input to square enum as output
+// e.g: FILE_0, RANK_0 -> (0+21) + (0*10) = 21 = A1
+#define FR2SQ(f, r) ( ( 21 + (f) ) + ( (r) * 10 ) )
+
+/* GLOBALS */
+
+extern int Sq120ToSq64[BRD_SQ_NUM]; // converts 120 SQR board to 64 SQR board
+extern int Sq64ToSq120[64]; 		// converts 64 SQR board to 120 SQR board
+
+
+/* FUNCTIONS */
+
+extern void AllInit();
+
+/* init.c */
+
+
 #endif

@@ -1,5 +1,5 @@
 all:
-	clear;gcc vice.c -o vice;./vice
+	clear;gcc vice.c init.c -o vice;./vice
 
 git:
-	clear;git add --all; git commit -am "${a}"; git push;git log
+	clear;git add --all; git commit -am "Video #${a}"; git push;git log
